@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class spawn : MonoBehaviour {
+public class Spawn : MonoBehaviour {
 
     public GameObject partPrefab;
-    public movePart movePartScript;
+    public MovePart movePartScript;
     public Transform ship;
+
+    int i = 1;
 
     public void onClick()
     {
@@ -13,6 +15,7 @@ public class spawn : MonoBehaviour {
         movePartScript.part = part;
         part.parent = ship;
         part.position = ship.position;
+        part.gameObject.name = partPrefab.name + i++;
         Global.controlShip = false;
     }
 

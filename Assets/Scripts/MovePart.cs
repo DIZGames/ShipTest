@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class movePart : MonoBehaviour {
+public class MovePart : MonoBehaviour {
 
     public Transform part;
 
