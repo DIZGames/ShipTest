@@ -16,7 +16,8 @@ public class Spawn : MonoBehaviour {
         part.parent = ship;
         part.position = ship.position;
         part.gameObject.name = partPrefab.name + i++;
-        Global.controlShip = false;
+        Global.controlType = 0;
+        Debug.Log("Control Block");
     }
 
 }

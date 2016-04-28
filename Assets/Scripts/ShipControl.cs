@@ -5,7 +5,7 @@ public class ShipControl : MonoBehaviour {
 
     void Update()
     {
-        if (Global.controlShip)
+        if (Global.controlType == 1)
         {
             Rigidbody2D r = GetComponent<Rigidbody2D>();
             if (Input.GetKey(KeyCode.UpArrow))
