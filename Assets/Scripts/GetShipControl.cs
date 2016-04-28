@@ -7,7 +7,7 @@ public class GetShipControl : MonoBehaviour {
 
     public void click()
     {
-        Global.controlShip = true;
+        Global.controlType = 1;
         groundController.CheckShipWalls();
     }
 }

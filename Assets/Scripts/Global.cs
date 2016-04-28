@@ -1,4 +1,5 @@
 ﻿public static class Global {
 
-    public static bool controlShip = false;
+    // 0 = blocks, 1 = ship, 2 = palyer
+    public static int controlType = 0;
 }

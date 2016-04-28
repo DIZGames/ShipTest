@@ -12,7 +12,7 @@ public class MovePart : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (part != null && !Global.controlShip)
+        if (part != null && Global.controlType == 0)
         {
             if (Input.GetKeyDown(KeyCode.UpArrow))
             {
