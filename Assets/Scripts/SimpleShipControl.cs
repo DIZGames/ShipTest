@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ShipControl : MonoBehaviour {
+// Add to Ship object
+public class SimpleShipControl : MonoBehaviour {
+
+    int forceStrength = 1;
 
     void Update()
     {
@@ -10,19 +13,19 @@ public class ShipControl : MonoBehaviour {
             Rigidbody2D r = GetComponent<Rigidbody2D>();
             if (Input.GetKey(KeyCode.UpArrow))
             {
-                r.AddForce(Vector2.up);
+                r.AddForce(Vector2.up * forceStrength);
             }
             else if (Input.GetKey(KeyCode.DownArrow))
             {
-                r.AddForce(Vector2.down);
+                r.AddForce(Vector2.down * forceStrength);
             }
             else if (Input.GetKey(KeyCode.RightArrow))
             {
-                r.AddForce(Vector2.right);
+                r.AddForce(Vector2.right * forceStrength);
             }
             else if (Input.GetKey(KeyCode.LeftArrow))
             {
-                r.AddForce(Vector2.left);
+                r.AddForce(Vector2.left * forceStrength);
             }
         }
     }

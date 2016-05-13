@@ -19,6 +19,11 @@ public class Ground : MonoBehaviour {
         groundController = FindObjectOfType(typeof(GroundController)) as GroundController;
         groundController.AddGround(this);
 	}
+
+    void OnMouseDown()
+    {
+        Destroy(gameObject);
+    }
 	
     public void CheckWalls()
     {
