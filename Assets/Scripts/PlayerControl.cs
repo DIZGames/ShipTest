@@ -7,6 +7,7 @@ public class PlayerControl : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        Global.controlType = 2;
 	}
 	
 	// Update is called once per frame
@@ -34,5 +35,7 @@ public class PlayerControl : MonoBehaviour {
             }
         }
         transform.localPosition = newPos;
+
+
 	}
 }
