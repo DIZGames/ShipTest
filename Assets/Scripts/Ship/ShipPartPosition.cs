@@ -1,0 +1,1 @@
+﻿public enum ShipPartPosition { CENTER, BEETWEEN }

@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Wall : MonoBehaviour {
+public class Wall : MonoBehaviour, IShipPart{
 
+    
 	// Use this for initialization
 	void Start () {
 	
@@ -12,4 +13,8 @@ public class Wall : MonoBehaviour {
 	void Update () {
 	
 	}
+    public ShipPartPosition position
+    {
+        get { return ShipPartPosition.BEETWEEN; }
+    }
 }

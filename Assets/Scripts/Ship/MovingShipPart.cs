@@ -8,6 +8,7 @@ public class MovingShipPart : MonoBehaviour {
     new Transform transform;
     new Collider2D collider;
     SpriteRenderer spriteRenderer;
+    ShipPartPosition shipPartPosition;
 
     void Start()
     {
@@ -18,6 +19,7 @@ public class MovingShipPart : MonoBehaviour {
         Color color = spriteRenderer.color;
         color.a = 0.5f;
         spriteRenderer.color = color;
+        shipPartPosition = GetComponent<IShipPart>().position;
     }
 
     void Update()
@@ -38,37 +40,67 @@ public class MovingShipPart : MonoBehaviour {
         {
 
             mousePos = newParent.InverseTransformPoint(mousePos);
+            float x = 0;
+            float y = 0;
 
-            float x = mousePos.x - (int)mousePos.x;
+            x = mousePos.x - (int)mousePos.x;
             if (x >= 0)
             {
-                if (x >= 0.5)
-                    x = (int)mousePos.x + 1;
+                if (shipPartPosition == ShipPartPosition.CENTER)
+                {
+                    if (x >= 0.5)
+                        x = (int)mousePos.x + 1;
+                    else
+                        x = (int)mousePos.x;
+                }
                 else
-                    x = (int)mousePos.x;
+                {
+                        x = (int)mousePos.x + 0.5f;
+                }
             }
             else
             {
-                if (x <= -0.5)
-                    x = (int)mousePos.x - 1;
+                if (shipPartPosition == ShipPartPosition.CENTER)
+                {
+                      if (x <= -0.5)
+                        x = (int)mousePos.x - 1;
+                    else
+                        x = (int)mousePos.x;
+                }
                 else
-                    x = (int)mousePos.x;
+                {
+                    x = (int)mousePos.x - 0.5f;
+                }
             }
 
-            float y = mousePos.y - (int)mousePos.y;
+            y = mousePos.y - (int)mousePos.y;
             if (y >= 0)
             {
-                if (y >= 0.5)
-                    y = (int)mousePos.y + 1;
-                else
-                    y = (int)mousePos.y;
+                if (shipPartPosition == ShipPartPosition.CENTER)
+                {
+                    if (y >= 0.5)
+                        y = (int)mousePos.y + 1;
+                    else
+                        y = (int)mousePos.y;
+                }
+                else if(shipPartPosition == ShipPartPosition.BEETWEEN)
+                {
+                    y = (int)mousePos.y + 0.5f;
+                }
             }
             else
             {
-                if (y <= -0.5)
-                    y = (int)mousePos.y - 1;
-                else
-                    y = (int)mousePos.y;
+                if (shipPartPosition == ShipPartPosition.CENTER)
+                {
+                    if (y <= -0.5)
+                        y = (int)mousePos.y - 1;
+                    else
+                        y = (int)mousePos.y;
+                }
+                else if(shipPartPosition == ShipPartPosition.BEETWEEN)
+                {
+                    y = (int)mousePos.y - 0.5f;
+                }
             }
 
             Vector3 newPos = new Vector3(x, y, transform.position.z);
@@ -86,7 +118,6 @@ public class MovingShipPart : MonoBehaviour {
             transform.position = new Vector2(mousePos.x, mousePos.y);
             transform.rotation = Quaternion.identity;
         }
-
 
         if (Input.GetMouseButtonDown(0))
         {
