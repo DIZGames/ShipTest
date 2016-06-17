@@ -15,8 +15,6 @@ public class MovingShipPart : MonoBehaviour {
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Collider2D[] colliders = Physics2D.OverlapAreaAll(new Vector2(mousePos.x - 0.5f, mousePos.y + 0.5f), new Vector2(mousePos.x + 0.5f, mousePos.y - 0.5f), LayerMask.GetMask("ShipGround"));
 
-        Debug.Log(colliders.Length);
-
         Transform newParent = null;
         foreach (Collider2D c in colliders)
         {
@@ -65,24 +63,11 @@ public class MovingShipPart : MonoBehaviour {
 
             Vector3 newPos = new Vector3(x, y, transform.position.z);
 
-            if (transform.position != newPos)
-            {
-                Collider2D[] colliders2 = Physics2D.OverlapAreaAll(new Vector2(x - 0.5f, y + 0.5f), new Vector2(x + 0.5f, y - 0.5f), LayerMask.GetMask("ShipGround"));
-                foreach (Collider2D c in colliders2)
-                {
-                    if (c.gameObject != gameObject && c.gameObject.tag == "ShipPart")
-                    {
-                        newParent = c.gameObject.transform.parent;
-                    }
-
-                }
-
-                if (transform.parent != newParent)
-                    transform.parent = newParent;
-                Quaternion newRot = new Quaternion(0f, 0f, newParent.rotation.z, newParent.rotation.w);
-                transform.rotation = newRot;
-                transform.localPosition = newPos;
-            }
+            if (transform.parent != newParent)
+                transform.parent = newParent;
+            Quaternion newRot = new Quaternion(0f, 0f, newParent.rotation.z, newParent.rotation.w);
+            transform.rotation = newRot;
+            transform.localPosition = newPos;
         }
         else
         {
