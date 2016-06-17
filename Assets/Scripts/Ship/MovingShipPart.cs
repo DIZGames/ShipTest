@@ -1,24 +1,34 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(Collider2D))]
+[RequireComponent(typeof(SpriteRenderer))]
 public class MovingShipPart : MonoBehaviour {
 
     new Transform transform;
+    new Collider2D collider;
+    SpriteRenderer spriteRenderer;
 
     void Start()
     {
         transform = gameObject.transform;
+        collider = GetComponent<Collider2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        collider.enabled = false;
+        Color color = spriteRenderer.color;
+        color.a = 0.5f;
+        spriteRenderer.color = color;
     }
 
     void Update()
     {
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Collider2D[] colliders = Physics2D.OverlapAreaAll(new Vector2(mousePos.x - 0.5f, mousePos.y + 0.5f), new Vector2(mousePos.x + 0.5f, mousePos.y - 0.5f), LayerMask.GetMask("ShipGround"));
+        Collider2D[] colliders = Physics2D.OverlapAreaAll(new Vector2(mousePos.x - 0.5f, mousePos.y + 0.5f), new Vector2(mousePos.x + 0.5f, mousePos.y - 0.5f), LayerMask.GetMask("ShipPart") | LayerMask.GetMask("ShipFloor"));
 
         Transform newParent = null;
         foreach (Collider2D c in colliders)
         {
-            if (c.gameObject != gameObject && c.gameObject.tag == "ShipPart")
+            if (c.gameObject != gameObject)
             {
                 newParent = c.gameObject.transform.parent;
             }
@@ -80,13 +90,21 @@ public class MovingShipPart : MonoBehaviour {
 
         if (Input.GetMouseButtonDown(0))
         {
-            Global.objectToMove = null;
-            if (newParent == null)
+            RaycastHit2D[] hit = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+            if(hit.Length == 0)
             {
-                GameObject newShip = Instantiate(Global.shipPrefab, transform.position, transform.rotation) as GameObject;
-                transform.SetParent(newShip.transform);
+                Global.objectToMove = null;
+                if (newParent == null)
+                {
+                    GameObject newShip = Instantiate(Global.shipPrefab, transform.position, transform.rotation) as GameObject;
+                    transform.SetParent(newShip.transform);
+                }
+                collider.enabled = true;
+                Color color = spriteRenderer.color;
+                color.a = 1f;
+                spriteRenderer.color = color;
+                Destroy(this);
             }
-            Destroy(this);
         }
     }
 }
