@@ -38,15 +38,17 @@ public class MovingShipPart : MonoBehaviour {
 
         if (newParent != null)
         {
+            if (transform.parent != newParent)
+                transform.parent = newParent;
+            Quaternion newRotation = new Quaternion(0f, 0f, newParent.rotation.z, newParent.rotation.w);
+            transform.rotation = newRotation;
 
             mousePos = newParent.InverseTransformPoint(mousePos);
-            float x = 0;
-            float y = 0;
-
-            x = mousePos.x - (int)mousePos.x;
-            if (x >= 0)
+            float x = mousePos.x - (int)mousePos.x;
+            float y = mousePos.y - (int)mousePos.y;
+            if (shipPartPosition == ShipPartPosition.CENTER)
             {
-                if (shipPartPosition == ShipPartPosition.CENTER)
+                if (x >= 0)
                 {
                     if (x >= 0.5)
                         x = (int)mousePos.x + 1;
@@ -55,74 +57,91 @@ public class MovingShipPart : MonoBehaviour {
                 }
                 else
                 {
-                        x = (int)mousePos.x + 0.5f;
-                }
-            }
-            else
-            {
-                if (shipPartPosition == ShipPartPosition.CENTER)
-                {
-                      if (x <= -0.5)
+                    if (x <= -0.5)
                         x = (int)mousePos.x - 1;
                     else
                         x = (int)mousePos.x;
-                }
-                else
-                {
-                    x = (int)mousePos.x - 0.5f;
-                }
-            }
+                }   
 
-            y = mousePos.y - (int)mousePos.y;
-            if (y >= 0)
-            {
-                if (shipPartPosition == ShipPartPosition.CENTER)
+                if (y >= 0)
                 {
                     if (y >= 0.5)
                         y = (int)mousePos.y + 1;
                     else
                         y = (int)mousePos.y;
                 }
-                else if(shipPartPosition == ShipPartPosition.BEETWEEN)
-                {
-                    y = (int)mousePos.y + 0.5f;
-                }
-            }
-            else
-            {
-                if (shipPartPosition == ShipPartPosition.CENTER)
+                else
                 {
                     if (y <= -0.5)
                         y = (int)mousePos.y - 1;
                     else
                         y = (int)mousePos.y;
                 }
-                else if(shipPartPosition == ShipPartPosition.BEETWEEN)
+            }
+            else if(shipPartPosition == ShipPartPosition.BETWEEN)
+            {
+                if (Mathf.Abs(x) >= 0.3 && Mathf.Abs(x) <= 0.7)
                 {
-                    y = (int)mousePos.y - 0.5f;
+                    if(x >= 0)
+                        x = (int)mousePos.x + 0.5f;
+                    else
+                        x = (int)mousePos.x - 0.5f;
+                    if (y >= 0)
+                    {
+                        if(y <= 0.5f)
+                            y = (int)mousePos.y;
+                        else
+                            y = (int)mousePos.y + 1;
+                    }
+                    else
+                    {
+                        y = Mathf.Abs(y);
+                        if (y <= 0.5f)
+                            y = (int)mousePos.y;
+                        else
+                            y = (int)mousePos.y - 1;
+                    }
+                    transform.Rotate(0, 0, 90);
+                }
+                else if (Mathf.Abs(y) >= 0.3 && Mathf.Abs(y) <= 0.7)
+                {
+                    if (x >= 0)
+                    {
+                        if (x <= 0.5f)
+                            x = (int)mousePos.x;
+                        else
+                            x = (int)mousePos.x + 1;
+                    }
+                    else
+                    {
+                        x = Mathf.Abs(x);
+                        if (x <= 0.5f)
+                            x = (int)mousePos.x;
+                        else
+                            x = (int)mousePos.x - 1;
+                    }
+                    if (y >= 0)
+                        y = (int)mousePos.y + 0.5f;
+                    else
+                        y = (int)mousePos.y - 0.5f;
                 }
             }
 
             Vector3 newPos = new Vector3(x, y, transform.position.z);
-
-            if (transform.parent != newParent)
-                transform.parent = newParent;
-            Quaternion newRot = new Quaternion(0f, 0f, newParent.rotation.z, newParent.rotation.w);
-            transform.rotation = newRot;
             transform.localPosition = newPos;
         }
         else
         {
             if (transform.parent != null)
                 transform.SetParent(null);
-            transform.position = new Vector2(mousePos.x, mousePos.y);
+            transform.position = new Vector3(mousePos.x, mousePos.y, transform.position.z);
             transform.rotation = Quaternion.identity;
         }
 
         if (Input.GetMouseButtonDown(0))
         {
             RaycastHit2D[] hit = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-            if(hit.Length == 0)
+            if((hit.Length == 0 && shipPartPosition == ShipPartPosition.CENTER) || (hit.Length > 0 && shipPartPosition == ShipPartPosition.BETWEEN))
             {
                 Global.objectToMove = null;
                 if (newParent == null)

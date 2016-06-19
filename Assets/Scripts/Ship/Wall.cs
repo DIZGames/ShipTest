@@ -15,6 +15,6 @@ public class Wall : MonoBehaviour, IShipPart{
 	}
     public ShipPartPosition position
     {
-        get { return ShipPartPosition.BEETWEEN; }
+        get { return ShipPartPosition.BETWEEN; }
     }
 }
