@@ -7,10 +7,16 @@ public class UI : MonoBehaviour {
     public GameObject floorPrefab;
     public GameObject wallBigPrefab;
     public GameObject wallSmallPrefab;
+    public GameObject thingOnShipPrefab;
 
 
     void Start(){
         Global.shipPrefab = shipPrefab;
+    }
+
+    public void ClickNewShip()
+    {
+
     }
 
     public void ClickNewFloor()
@@ -32,5 +38,12 @@ public class UI : MonoBehaviour {
         GameObject newWallB = Instantiate(wallBigPrefab, Input.mousePosition, Quaternion.identity) as GameObject;
         newWallB.AddComponent<MovingShipPart>();
         Global.objectToMove = newWallB.transform;
+    }
+
+    public void ClickNewThingOnShip()
+    {
+        GameObject newThing = Instantiate(thingOnShipPrefab, Input.mousePosition, Quaternion.identity) as GameObject;
+        newThing.AddComponent<MovingShipPart>();
+        Global.objectToMove = newThing.transform;
     }
 }

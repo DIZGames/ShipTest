@@ -13,8 +13,19 @@ public class Wall : MonoBehaviour, IShipPart{
 	void Update () {
 	
 	}
+
     public ShipPartPosition position
     {
         get { return ShipPartPosition.BETWEEN; }
+    }
+
+    public bool floorLevel
+    {
+        get { return false; }
+    }
+
+    public bool createsNewShip
+    {
+        get { return false; }
     }
 }

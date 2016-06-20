@@ -1,1 +1,1 @@
-﻿public enum ShipPartPosition { CENTER, BETWEEN }
+﻿public enum ShipPartPosition { CENTER, BETWEEN, ONTOP }

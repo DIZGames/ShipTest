@@ -9,17 +9,32 @@ public class MovingShipPart : MonoBehaviour {
     new Collider2D collider;
     SpriteRenderer spriteRenderer;
     ShipPartPosition shipPartPosition;
+    bool floorLevel;
+    bool createsNewShip;
+    float boxWidth = 0.2f; // Defines the width of the box in which the mouse position is checked for parts that can be set between Blocks (like Walls)
 
     void Start()
     {
         transform = gameObject.transform;
         collider = GetComponent<Collider2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        IShipPart iShipPart = GetComponent<IShipPart>();
+        shipPartPosition = iShipPart.position;
+        createsNewShip = iShipPart.createsNewShip;
+        floorLevel = iShipPart.floorLevel;
+
         collider.enabled = false;
         Color color = spriteRenderer.color;
         color.a = 0.5f;
         spriteRenderer.color = color;
-        shipPartPosition = GetComponent<IShipPart>().position;
+    }
+
+    void OnDestroy()
+    {
+        collider.enabled = true;
+        Color color = spriteRenderer.color;
+        color.a = 1f;
+        spriteRenderer.color = color;
     }
 
     void Update()
@@ -48,6 +63,7 @@ public class MovingShipPart : MonoBehaviour {
             float y = mousePos.y - (int)mousePos.y;
             if (shipPartPosition == ShipPartPosition.CENTER)
             {
+                // Calculate x Position
                 if (x >= 0)
                 {
                     if (x >= 0.5)
@@ -61,8 +77,9 @@ public class MovingShipPart : MonoBehaviour {
                         x = (int)mousePos.x - 1;
                     else
                         x = (int)mousePos.x;
-                }   
+                }
 
+                // Calculate y Position
                 if (y >= 0)
                 {
                     if (y >= 0.5)
@@ -80,7 +97,7 @@ public class MovingShipPart : MonoBehaviour {
             }
             else if(shipPartPosition == ShipPartPosition.BETWEEN)
             {
-                if (Mathf.Abs(x) >= 0.3 && Mathf.Abs(x) <= 0.7)
+                if (Mathf.Abs(x) >= (0.5 - boxWidth) && Mathf.Abs(x) <= (0.5 + boxWidth))
                 {
                     if(x >= 0)
                         x = (int)mousePos.x + 0.5f;
@@ -140,20 +157,20 @@ public class MovingShipPart : MonoBehaviour {
 
         if (Input.GetMouseButtonDown(0))
         {
-            RaycastHit2D[] hit = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-            if((hit.Length == 0 && shipPartPosition == ShipPartPosition.CENTER) || (hit.Length > 0 && shipPartPosition == ShipPartPosition.BETWEEN))
+            if(newParent != null || createsNewShip)
             {
-                Global.objectToMove = null;
-                if (newParent == null)
+                RaycastHit2D[] hit = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+                if((hit.Length == 0 && shipPartPosition == ShipPartPosition.CENTER) 
+                    || (hit.Length > 0 && (shipPartPosition == ShipPartPosition.BETWEEN || shipPartPosition == ShipPartPosition.ONTOP)))
                 {
-                    GameObject newShip = Instantiate(Global.shipPrefab, transform.position, transform.rotation) as GameObject;
-                    transform.SetParent(newShip.transform);
+                    Global.objectToMove = null;
+                    if (newParent == null)
+                    {
+                        GameObject newShip = Instantiate(Global.shipPrefab, transform.position, transform.rotation) as GameObject;
+                        transform.SetParent(newShip.transform);
+                    }
+                    Destroy(this);
                 }
-                collider.enabled = true;
-                Color color = spriteRenderer.color;
-                color.a = 1f;
-                spriteRenderer.color = color;
-                Destroy(this);
             }
         }
     }

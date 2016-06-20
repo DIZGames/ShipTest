@@ -16,4 +16,14 @@ public class WallBig : MonoBehaviour, IShipPart {
     {
         get { return ShipPartPosition.CENTER; }
     }
+
+    public bool floorLevel
+    {
+        get { return false; }
+    }
+
+    public bool createsNewShip
+    {
+        get { return false; }
+    }
 }
