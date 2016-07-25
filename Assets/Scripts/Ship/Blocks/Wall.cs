@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ThingOnShip: MonoBehaviour, IShipPart {
+public class Wall : MonoBehaviour, IBlock{
 
     
 	// Use this for initialization
 	void Start () {
-	    
+	
 	}
 	
 	// Update is called once per frame
@@ -14,9 +14,9 @@ public class ThingOnShip: MonoBehaviour, IShipPart {
 	
 	}
 
-    public ShipPartPosition position
+    public BlockPosition position
     {
-        get { return ShipPartPosition.ONTOP; }
+        get { return BlockPosition.BETWEEN_TOP; }
     }
 
     public bool floorLevel

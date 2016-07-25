@@ -14,36 +14,43 @@ public class UI : MonoBehaviour {
         Global.shipPrefab = shipPrefab;
     }
 
-    public void ClickNewShip()
+    void Update()
     {
-
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+            ClickNewFloor();
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+            ClickNewSmallWall();
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+            ClickNewBigWall();
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
+            ClickNewThingOnShip();
     }
 
     public void ClickNewFloor()
     {
         GameObject newFloor = Instantiate(floorPrefab, Input.mousePosition, Quaternion.identity) as GameObject;
-        newFloor.AddComponent<MovingShipPart>();
+        newFloor.AddComponent<MovingBlock>();
         Global.objectToMove = newFloor.transform;
     }
 
     public void ClickNewSmallWall()
     {
         GameObject newWall = Instantiate(wallSmallPrefab, Input.mousePosition, Quaternion.identity) as GameObject;
-        newWall.AddComponent<MovingShipPart>();
+        newWall.AddComponent<MovingBlock>();
         Global.objectToMove = newWall.transform;
     }
 
     public void ClickNewBigWall()
     {
         GameObject newWallB = Instantiate(wallBigPrefab, Input.mousePosition, Quaternion.identity) as GameObject;
-        newWallB.AddComponent<MovingShipPart>();
+        newWallB.AddComponent<MovingBlock>();
         Global.objectToMove = newWallB.transform;
     }
 
     public void ClickNewThingOnShip()
     {
         GameObject newThing = Instantiate(thingOnShipPrefab, Input.mousePosition, Quaternion.identity) as GameObject;
-        newThing.AddComponent<MovingShipPart>();
+        newThing.AddComponent<MovingBlock>();
         Global.objectToMove = newThing.transform;
     }
 }

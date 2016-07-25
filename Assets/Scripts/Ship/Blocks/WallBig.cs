@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class WallBig : MonoBehaviour, IShipPart {
+public class WallBig : MonoBehaviour, IBlock {
 
 	// Use this for initialization
 	void Start () {
@@ -12,9 +12,9 @@ public class WallBig : MonoBehaviour, IShipPart {
 	void Update () {
 	
 	}
-    public ShipPartPosition position
+    public BlockPosition position
     {
-        get { return ShipPartPosition.CENTER; }
+        get { return BlockPosition.CENTER; }
     }
 
     public bool floorLevel

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Floor : MonoBehaviour, IShipPart {
+public class ThingOnShip: MonoBehaviour, IBlock {
 
     
 	// Use this for initialization
@@ -14,18 +14,18 @@ public class Floor : MonoBehaviour, IShipPart {
 	
 	}
 
-    public ShipPartPosition position
+    public BlockPosition position
     {
-        get { return ShipPartPosition.CENTER; }
+        get { return BlockPosition.CENTER_TOP; }
     }
 
     public bool floorLevel
     {
-        get { return true; }
+        get { return false; }
     }
 
     public bool createsNewShip
     {
-        get { return true; }
+        get { return false; }
     }
 }
